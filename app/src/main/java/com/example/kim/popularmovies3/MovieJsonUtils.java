@@ -28,16 +28,11 @@ public final class MovieJsonUtils {
 
     private static final String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
 
-    private static final String API_KEY = "947ec954e528c2a44ab6e1e3cf12b7f0";
-    // Example API request:
+    private static final String API_KEY = "api_key_here";
+    // Example API requests:
     // https://api.themoviedb.org/3/movie/550?api_key="api_key"
     // https://api.themoviedb.org/3/movie/popular?api_key=<<api_key>>&language=en-US&page=1
-    /*
-     * The sort field. Can be most_popular or top_rated.
-     * Default: results are sorted by top_rated if no field is specified.
-     */
-    //final static String PARAM_ORDERBY = "orderby";
-    //final static String orderBy = "popular";
+
     /** Tag for the log messages */
     private static final String LOG_TAG = MovieJsonUtils.class.getSimpleName();
 
@@ -87,9 +82,12 @@ public final class MovieJsonUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
+        Log.v(LOG_TAG, "Json Response: " + jsonResponse);
+
         // Extract relevant fields from the JSON response and create a list of {@link MovieItem}s
         List<MovieItem> movieItems = extractFeatureFromJson(jsonResponse);
 
+        Log.v(LOG_TAG, "List created.");
         // Return the list of {@link MovieItem}s
         return movieItems;
     }

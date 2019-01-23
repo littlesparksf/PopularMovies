@@ -65,6 +65,16 @@ import java.util.List;
 
         Log.v(LOG_TAG, "Adapter set on recycler view.");
 
+
+         // Obtain a reference to the SharedPreferences file for this app
+         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+         // And register to be notified of preference changes
+         // So we know when the user has adjusted the query settings
+         prefs.registerOnSharedPreferenceChangeListener(this);
+
+         Log.v(LOG_TAG, "Shared preferences called.");
+
          /* Once all of our views are setup, we can load the movie data. */
          loadMovieData();
 
@@ -86,10 +96,10 @@ import java.util.List;
          // So we know when the user has adjusted the query settings
          prefs.registerOnSharedPreferenceChangeListener(this);
 
-//         orderBy = prefs.getString(
-//                 getString(R.string.settings_order_by_key),
-//                 getString(R.string.settings_order_by_default)
-//         );
+         orderBy = prefs.getString(
+                 getString(R.string.settings_order_by_key),
+                 getString(R.string.settings_order_by_default)
+         );
 
          Log.v(LOG_TAG, "orderBy called  " + orderBy);
 
