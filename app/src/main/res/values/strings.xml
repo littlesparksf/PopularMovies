@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Title for the application. [CHAR LIMIT=12] -->
+
+    <string name="app_name">Popular Movies</string>
+
+    <!-- API key for app -->
+
+    <string name="api_key">API_KEY</string>
+
+
+    <!-- Text to display in the list when there are no movies [CHAR LIMIT=NONE] -->
+
+    <string name="no_movies">No movies found.</string>
+
+
+    <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
+
+    <string name="no_internet_connection">No internet connection.</string>
+
+
+    <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
+
+    <string name="settings_menu_item">Settings</string>
+
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
+
+    <string name="settings_title">Movie Search Settings</string>
+
+    <!-- Detail Activity Title [CHAR LIMIT=NONE] -->
+
+    <string name="detail_activity_title">Movie Search Settings</string>
+
+    <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
+
+    <string name="settings_order_by_label">Order By</string>
+
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_most_popular_value</string>
+
+
+    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
+
+    <string name="settings_order_by_most_popular_label">Most Popular</string>
+
+    <string name="settings_order_by_most_popular_value" translatable="false">popular</string>
+
+
+    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+
+    <string name="settings_order_by_top_rated_label">Top Rated</string>
+
+    <string name="settings_order_by_top_rated_value" translatable="false">top_rated</string>
+
+</resources>
