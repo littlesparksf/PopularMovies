@@ -215,6 +215,8 @@ public final class MovieJsonUtils {
             Log.e("QueryUtils", "Problem parsing the movieItem JSON results", e);
         }
 
+        Log.v(LOG_TAG, "movieItemList created.");
+        
         // Return the list of earthquakes
         return movieItemList;
     }
