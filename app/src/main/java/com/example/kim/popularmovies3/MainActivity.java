@@ -27,7 +27,7 @@ import java.util.List;
      private MovieAdapter mAdapter;
      private TextView mEmptyStateTextView;
      private ProgressBar mLoadingIndicator;
-     public String orderBy = "popular";
+     public String orderBy;
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
      @Override
@@ -65,17 +65,7 @@ import java.util.List;
 
         Log.v(LOG_TAG, "Adapter set on recycler view.");
 
-
-         // Obtain a reference to the SharedPreferences file for this app
-         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-         // And register to be notified of preference changes
-         // So we know when the user has adjusted the query settings
-         prefs.registerOnSharedPreferenceChangeListener(this);
-
-         Log.v(LOG_TAG, "Shared preferences called.");
-
-         /* Once all of our views are setup, we can load the movie data. */
+        /* Once all of our views are setup, we can load the movie data. */
          loadMovieData();
 
          Log.v(LOG_TAG, "loadMovieData called.");

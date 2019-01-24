@@ -50,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Log.v(LOG_TAG, "Poster path: " + posterPath);
 
         // Build poster url
-        String posterUrl = "http://image.tmdb.org/t/p/" + "w185/" + posterPath;
+        String posterUrl = "http://image.tmdb.org/t/p/" + "w185" + posterPath;
         // Log poster url
         Log.v(LOG_TAG, "Poster Url: " + posterUrl);
 
