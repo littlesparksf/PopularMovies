@@ -50,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Log.v(LOG_TAG, "Poster path: " + posterPath);
 
         // Build poster url
-        String posterUrl = "http://image.tmdb.org/t/p/" + "w185" + posterPath;
+        String posterUrl = "https://image.tmdb.org/t/p/" + "w185" + posterPath;
         // Log poster url
         Log.v(LOG_TAG, "Poster Url: " + posterUrl);
 
@@ -95,7 +95,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             MovieItem movie = movieItemList.get(moviePosition);
 
             Intent intent = new Intent(imageView.getContext(), MovieDetail.class);
-            intent.putExtra ("movie", new MovieItem(movie.getTitle(), movie.getImage(), movie.getOverview()));
+            intent.putExtra ("movie", new MovieItem(movie.getTitle(), movie.getReleaseDate(), movie.getImage(), movie.getRating(), movie.getOverview()));
             imageView.getContext().startActivity(intent);
         }
     }

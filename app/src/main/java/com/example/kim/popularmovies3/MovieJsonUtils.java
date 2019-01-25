@@ -28,7 +28,7 @@ public final class MovieJsonUtils {
 
     private static final String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
 
-    private static final String API_KEY = "api_key_here";
+    private static final String API_KEY = "947ec954e528c2a44ab6e1e3cf12b7f0";
     // Example API requests:
     // https://api.themoviedb.org/3/movie/550?api_key="api_key"
     // https://api.themoviedb.org/3/movie/popular?api_key=<<api_key>>&language=en-US&page=1
@@ -189,20 +189,24 @@ public final class MovieJsonUtils {
                 // Get a single MovieItem at position i within the list of MovieItems
                 JSONObject currentMovieItem = movieItemArray.getJSONObject(i);
 
-                // Extract the value for the key called "place"
+                // Extract the value for the key called "title"
                 String title = currentMovieItem.getString("title");
+
+                // Extract the value for the key called "release_date"
+                String releaseDate = currentMovieItem.getString("release_date");
 
                 // Extract the value for the key called "time"
                 String image = currentMovieItem.getString("poster_path");
 
-                String overview = currentMovieItem.getString("overview");
+                // Extract the value for the key called "vote_average"
+                String rating = currentMovieItem.getString("vote_average");
 
-                // Extract the value for the key called "url"
-                // String url = currentMovieItem.getString("url");
+                // Extract the value for the key called "overview"
+                String overview = currentMovieItem.getString("overview");
 
                 // Create a new {@link MovieItem} object with the image, title and synopsis
                 // from the JSON response.
-                MovieItem movieItem = new MovieItem(title, image, overview);
+                MovieItem movieItem = new MovieItem(title, releaseDate, image, rating, overview);
 
                 // Add the new {@link MovieItem} to the list of MovieItems.
                 movieItemList.add(movieItem);

@@ -17,18 +17,23 @@ public class MovieItem implements Parcelable {
     };
 
     private String title;
+    private String releaseDate;
     private String image;
+    private String rating;
     private String overview;
 
     /**
      * No args constructor for use in serialization
      */
-    public MovieItem() {}
+    public MovieItem() {
+    }
 
     // Constructor
-    public MovieItem(String title, String image, String overview) {
+    public MovieItem(String title, String releaseDate, String image, String rating, String overview) {
         this.title = title;
+        this.releaseDate = releaseDate;
         this.image = image;
+        this.rating = rating;
         this.overview = overview;
     }
 
@@ -36,10 +41,17 @@ public class MovieItem implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title) { this.title = title; }
 
-        this.title = title;
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
 
     public String getImage() {
         return image;
@@ -48,6 +60,12 @@ public class MovieItem implements Parcelable {
     public void setImage(String image) {
         this.image = image;
     }
+
+
+    public String getRating() { return  rating; }
+
+    public void setRating (String rating) { this.rating = rating; }
+
 
     public String getOverview() {
         return overview;
@@ -58,9 +76,12 @@ public class MovieItem implements Parcelable {
     }
 
     // Parcelling part
-    public MovieItem(Parcel in){
+    public MovieItem(Parcel in) {
         this.title = in.readString();
-        this.image =  in.readString();
+        this.image = in.readString();
+        this.overview = in.readString();
+        this.rating = in.readString();
+        this.releaseDate = in.readString();
     }
 
     @Override
@@ -72,13 +93,8 @@ public class MovieItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
         dest.writeString(this.image);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.rating);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Movie{" +
-//                "Title='" + title + '\'' +
-//                ", Poster='" + image + '\'' +
-//                '}';
-//    }
 }
