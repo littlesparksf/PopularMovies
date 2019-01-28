@@ -3,17 +3,20 @@ package com.example.kim.popularmovies3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class MovieDetail extends AppCompatActivity {
-    public static final String EXTRA_POSITION = "extra_position";
-    private static final int DEFAULT_POSITION = -1;
 
-    android.os.Bundle data = getIntent().getExtras();
-    MovieItem movieItem = (MovieItem) data.getParcelable("movie");
+
+public class MovieDetail extends AppCompatActivity {
+//    public static final String EXTRA_POSITION = "extra_position";
+//    private static final int DEFAULT_POSITION = -1;
+
+    MovieItem movieItem = null;
+    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +25,21 @@ public class MovieDetail extends AppCompatActivity {
         setContentView(R.layout.movie_detail);
         ImageView posterDetailView = findViewById(R.id.movie_detail_poster_view);
 
+        android.os.Bundle data = getIntent().getExtras();
+        movieItem = data.getParcelable("movie");
+
+        // Get poster path
+        String posterPath = movieItem.getImage();
+        Log.v(LOG_TAG, "Poster path: " + posterPath);
+
+        // Build poster url
+        String posterUrl = "https://image.tmdb.org/t/p/" + "w185" + posterPath;
+        // Log poster url
+        Log.v(LOG_TAG, "Poster Url: " + posterUrl);
+
         populateUI();
         Picasso.with(this)
-                .load(movieItem.getImage())
+                .load(posterUrl)
                 .into(posterDetailView);
     }
 
@@ -58,7 +73,6 @@ public class MovieDetail extends AppCompatActivity {
         // Find release date of current movie
         String movieReleaseDate = movieItem.getReleaseDate();
         // Display the release date of the current movie in that TextView
-        movieOverviewView.setText(movieReleaseDate);
+        movieReleaseDateView.setText(movieReleaseDate);
     }
-
 }

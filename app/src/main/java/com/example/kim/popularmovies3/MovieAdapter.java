@@ -57,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         //Render image using Picasso library
         Picasso.with(mContext).load(posterUrl)
                 .error(R.drawable.cat)
-                .placeholder(R.drawable.cat)
+                //.placeholder(R.drawable.cat)
                 .into(viewHolder.imageView);
     }
 
@@ -67,11 +67,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     /**
-     * This method is used to set the weather forecast on a ForecastAdapter if we've already
-     * created one. This is handy when we get new data from the web but don't want to create a
+     * This method is used to set new data on an existing MovieAdapter.
+     * This is handy when we get new data from the web but don't want to create a
      * new MovieAdapter to display it.
      *
-     * @param movieData The new weather data to be displayed.
+     * @param movieData The new movie data to be displayed.
      */
     public void setMovieData(List<MovieItem> movieData) {
         movieItemList = movieData;
