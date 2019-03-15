@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textAppearance="?android:textAppearanceMedium"
-        android:text="No data"/>
+        android:text="@string/error_message"/>
 
     <!-- Loading indicator for user feedback between queries to MovieDB -->
     <ProgressBar

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,11 +31,22 @@ import java.util.List;
      public String orderBy;
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+     /* Constant values for the names of each respective lifecycle callback */
+     private static final String ON_CREATE = "onCreate";
+     private static final String ON_START = "onStart";
+     private static final String ON_RESUME = "onResume";
+     private static final String ON_PAUSE = "onPause";
+     private static final String ON_STOP = "onStop";
+     private static final String ON_RESTART = "onRestart";
+     private static final String ON_DESTROY = "onDestroy";
+     private static final String ON_SAVE_INSTANCE_STATE = "onSaveInstanceState";
+
      @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.v(LOG_TAG, "onCreate called.");
+        Log.v(LOG_TAG, ON_CREATE);
 
         // Get a reference to the RecyclerView
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -187,5 +199,110 @@ import java.util.List;
              return true;
          }
          return super.onOptionsItemSelected(item);
+     }
+
+      /**
+      * Called when the activity is becoming visible to the user.
+      *
+      * Followed by onResume() if the activity comes to the foreground, or onStop() if it becomes
+      * hidden.
+      */
+     @Override
+     protected void onStart() {
+         super.onStart();
+
+         logAndAppend(ON_START);
+     }
+
+     /**
+      * Called when the activity will start interacting with the user. At this point your activity
+      * is at the top of the activity stack, with user input going to it.
+      *
+      * Always followed by onPause().
+      */
+     @Override
+     protected void onResume() {
+         super.onResume();
+
+         logAndAppend(ON_RESUME);
+     }
+
+     /**
+      * Called when the system is about to start resuming a previous activity. This is typically
+      * used to commit unsaved changes to persistent data, stop animations and other things that may
+      * be consuming CPU, etc. Implementations of this method must be very quick because the next
+      * activity will not be resumed until this method returns.
+      *
+      * Followed by either onResume() if the activity returns back to the front, or onStop() if it
+      * becomes invisible to the user.
+      */
+     @Override
+     protected void onPause() {
+         super.onPause();
+
+         logAndAppend(ON_PAUSE);
+     }
+
+     // COMPLETED (5) Override onStop, call super.onStop, and call logAndAppend with ON_STOP
+     /**
+      * Called when the activity is no longer visible to the user, because another activity has been
+      * resumed and is covering this one. This may happen either because a new activity is being
+      * started, an existing one is being brought in front of this one, or this one is being
+      * destroyed.
+      *
+      * Followed by either onRestart() if this activity is coming back to interact with the user, or
+      * onDestroy() if this activity is going away.
+      */
+     @Override
+     protected void onStop() {
+         super.onStop();
+
+         logAndAppend(ON_STOP);
+     }
+
+     // COMPLETED (6) Override onRestart, call super.onRestart, and call logAndAppend with ON_RESTART
+     /**
+      * Called after your activity has been stopped, prior to it being started again.
+      *
+      * Always followed by onStart()
+      */
+     @Override
+     protected void onRestart() {
+         super.onRestart();
+
+         logAndAppend(ON_RESTART);
+     }
+
+     // COMPLETED (7) Override onDestroy, call super.onDestroy, and call logAndAppend with ON_DESTROY
+     /**
+      * The final call you receive before your activity is destroyed. This can happen either because
+      * the activity is finishing (someone called finish() on it, or because the system is
+      * temporarily destroying this instance of the activity to save space. You can distinguish
+      * between these two scenarios with the isFinishing() method.
+      */
+     @Override
+     protected void onDestroy() {
+         super.onDestroy();
+
+         logAndAppend(ON_DESTROY);
+     }
+
+     @Override
+     protected void onSaveInstanceState(Bundle outState) {
+         super.onSaveInstanceState(outState);
+         logAndAppend(ON_SAVE_INSTANCE_STATE);
+         // Not sure if I need to store movie list in  or if this
+         // works without the @Override 
+     }
+
+     /**
+      * Logs to the console and appends the lifecycle method name to the TextView so that you can
+      * view the series of method callbacks that are called both from the app and from within
+      * Android Studio's Logcat.
+      *
+      * @param lifecycleEvent The name of the event to be logged.
+      */
+     private void logAndAppend(String lifecycleEvent) {
+         Log.d(LOG_TAG, "Lifecycle Event: " + lifecycleEvent);
      }
  }

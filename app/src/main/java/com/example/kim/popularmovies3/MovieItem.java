@@ -1,9 +1,12 @@
 package com.example.kim.popularmovies3;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
+@Entity(tableName = "favoriteMovies")
 public class MovieItem implements Parcelable {
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -16,6 +19,8 @@ public class MovieItem implements Parcelable {
         }
     };
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String title;
     private String releaseDate;
     private String image;
@@ -28,7 +33,8 @@ public class MovieItem implements Parcelable {
     public MovieItem() {
     }
 
-    // Constructor
+    // Room will ignore constructor without id
+    @Ignore
     public MovieItem(String title, String releaseDate, String image, String rating, String overview) {
         this.title = title;
         this.releaseDate = releaseDate;
@@ -36,6 +42,21 @@ public class MovieItem implements Parcelable {
         this.rating = rating;
         this.overview = overview;
     }
+
+    public MovieItem(int id, String title, String releaseDate, String image, String rating, String overview) {
+        this.id = id;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.image = image;
+        this.rating = rating;
+        this.overview = overview;
+    }
+
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
 
     public String getTitle() {
         return title;

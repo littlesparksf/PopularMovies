@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<MovieItem> movieItemList;
+    private List<MovieItem> mMovieItemList;
     private Context mContext;
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
@@ -26,7 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public MovieAdapter(Context context, List<MovieItem> movieItemList) {
-        this.movieItemList = movieItemList;
+        this.mMovieItemList = movieItemList;
         this.mContext = context;
     }
 
@@ -41,7 +41,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        final MovieItem movieItem = movieItemList.get(position);
+        final MovieItem movieItem = mMovieItemList.get(position);
 
         Log.v(LOG_TAG, "onBindViewHolder called.");
 
@@ -63,7 +63,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return (null != movieItemList ? movieItemList.size() : 0);
+        return (null != mMovieItemList ? mMovieItemList.size() : 0);
     }
 
     /**
@@ -74,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
      * @param movieData The new movie data to be displayed.
      */
     public void setMovieData(List<MovieItem> movieData) {
-        movieItemList = movieData;
+        mMovieItemList = movieData;
         notifyDataSetChanged();
     }
 
@@ -92,7 +92,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             int moviePosition = getAdapterPosition();
-            MovieItem movie = movieItemList.get(moviePosition);
+            MovieItem movie = mMovieItemList.get(moviePosition);
 
             Intent intent = new Intent(imageView.getContext(), MovieDetail.class);
             intent.putExtra ("movie", new MovieItem(movie.getTitle(), movie.getReleaseDate(), movie.getImage(), movie.getRating(), movie.getOverview()));

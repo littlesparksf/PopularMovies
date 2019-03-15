@@ -9,4 +9,10 @@
         android:orderInCategory="1"
         android:title="@string/settings_menu_item"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:orderInCategory="1"
+        android:title="@string/favorites_menu_item"
+        app:showAsAction="ifRoom" />
 </menu>

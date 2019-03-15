@@ -195,7 +195,7 @@ public final class MovieJsonUtils {
                 // Extract the value for the key called "release_date"
                 String releaseDate = currentMovieItem.getString("release_date");
 
-                // Extract the value for the key called "time"
+                // Extract the value for the key called "poster_path"
                 String image = currentMovieItem.getString("poster_path");
 
                 // Extract the value for the key called "vote_average"
