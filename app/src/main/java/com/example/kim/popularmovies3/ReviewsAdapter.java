@@ -1,6 +1,8 @@
 package com.example.kim.popularmovies3;
 
         import android.content.Context;
+        import android.content.Intent;
+        import android.net.Uri;
         import android.support.v7.widget.RecyclerView;
         import android.util.Log;
         import android.view.LayoutInflater;
@@ -18,18 +20,18 @@ package com.example.kim.popularmovies3;
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder> {
 
     // Class variables for the List that holds task data and the Context
-    private List<MovieItem> mFavoriteMovies;
+    private List<ReviewListItem> mReviewsList;
     private Context mContext;
     private static final String LOG_TAG = FavoriteAdapter.class.getSimpleName();
 
     /**
      * Constructor for the TaskAdapter that initializes the Context.
      * @param context  the current Context
-     * @param favoriteMovies the ItemClickListener
+     * @param reviewsList the ItemClickListener
      */
 
-    public ReviewsAdapter(Context context, List<MovieItem> favoriteMovies) {
-        this.mFavoriteMovies = favoriteMovies;
+    public ReviewsAdapter(Context context, List<ReviewListItem> reviewsList) {
+        this.mReviewsList = reviewsList;
         this.mContext = context;
     }
 
@@ -60,18 +62,18 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     @Override
     public void onBindViewHolder(ReviewsViewHolder holder, int position) {
 
-        Log.v(LOG_TAG, "onBindViewHolder called.");
+        Log.v(LOG_TAG, "onBindViewHolder for Reviews called.");
 
         // Determine the values of the wanted data
-        MovieItem favoriteMovie = mFavoriteMovies.get(position);
-        String description = favoriteMovie.getOverview();
-        String title = favoriteMovie.getTitle();
-        String rating = favoriteMovie.getRating();
+        ReviewListItem movieReview = mReviewsList.get(position);
+        int description = movieReview.getReviewId();
+        String reviewAuthor = movieReview.getAuthor();
+        String reviewText = movieReview.getReviewText();
+        String reviewUrl = movieReview.getReviewUrl();
 
         //Set values
-        holder.favoriteOverviewView.setText(description);
-        holder.favoriteTitleView.setText(title);
-        holder.favoriteRatingView.setText(rating);
+        holder.reviewAuthorTextView.setText(reviewAuthor);
+        holder.reviewContentTextView.setText(reviewText);
     }
 
     /**
@@ -80,24 +82,23 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
     @Override
     public int getItemCount() {
-        if (mFavoriteMovies == null) {
+        if (mReviewsList == null) {
             return 0;
         }
-        return mFavoriteMovies.size();
+        return mReviewsList.size();
     }
 
-    public List<MovieItem> getFavoriteMovies() {
-        return mFavoriteMovies;
+    public List<ReviewListItem> getReviews() {
+        return mReviewsList;
     }
-
 
     /**
      * When data changes, this method updates the list of taskEntries
      * and notifies the adapter to use the new values on it
      */
 
-    public void setFavorites(List<MovieItem> favoriteMovies) {
-        mFavoriteMovies = favoriteMovies;
+    public void setFavorites(List<ReviewListItem> reviewList) {
+        mReviewsList = reviewList;
         notifyDataSetChanged();
     }
 
@@ -108,10 +109,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     // Inner class for creating ViewHolders
     class ReviewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        // Class variables for the task description and priority TextViews
-        TextView favoriteTitleView;
-        TextView favoriteOverviewView;
-        TextView favoriteRatingView;
+        // Class variables for the author and content TextViews
+        TextView reviewAuthorTextView;
+        TextView reviewContentTextView;
 
         /**
          * Constructor for the TaskViewHolders.
@@ -121,19 +121,21 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         public ReviewsViewHolder(View itemView) {
             super(itemView);
 
-            favoriteTitleView = itemView.findViewById(R.id.favorite_title);
-            favoriteOverviewView = itemView.findViewById(R.id.favorite_overview);
-            favoriteRatingView = itemView.findViewById(R.id.favorite_rating);
+            reviewAuthorTextView = itemView.findViewById(R.id.review_list_author);
+            reviewContentTextView = itemView.findViewById(R.id.review_list_text);
 
             itemView.setOnClickListener(this);
         }
 
 
         @Override
-
         public void onClick(View view) {
-            int elementId = mFavoriteMovies.get(getAdapterPosition()).getId();
-            //mItemClickListener.onItemClickListener(elementId);
+            int reviewPosition = getAdapterPosition();
+            ReviewListItem review = mReviewsList.get(reviewPosition);
+
+            String url = review.getReviewUrl();
+            Intent reviewUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            mContext.startActivity(reviewUrlIntent);
         }
-    }
+     }
 }
