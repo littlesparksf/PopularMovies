@@ -2,24 +2,43 @@ package com.example.kim.popularmovies3;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.kim.popularmovies3.database.AppDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MovieDetail extends AppCompatActivity {
-//    public static final String EXTRA_POSITION = "extra_position";
-//    private static final int DEFAULT_POSITION = -1;
+
     public static final int DEFAULT_FAVORITE_ID = -1;
+
+    // Recycler view variables
+    private RecyclerView mReviewsRecyclerView;
+    private ReviewsAdapter mReviewsAdapter;
+    private TextView mReviewsEmptyView;
+    private ProgressBar mReviewsLoadingIndicator;
+
+    // Trailer view variables
+    private RecyclerView mTrailersRecyclerView;
+    private TrailersAdapter mTrailersAdapter;
+    private TextView mTrailersEmptyView;
+    private ProgressBar mTrailersLoadingIndicator;
 
     private AppDatabase mDb;
     MovieItem movieItem = null;
@@ -59,6 +78,78 @@ public class MovieDetail extends AppCompatActivity {
         });
 
         // Need to trigger api calls for reviews and trailers, then set up json utils for them.
+
+        // Set up Reviews Recycler View
+
+        //  Get a reference to the RecyclerView
+        mReviewsRecyclerView = findViewById(R.id.trailers_recycler_view);
+
+        Log.v(LOG_TAG, "Trailer recycler view found.");
+
+        /* This TextView is used to display errors and will be hidden if there are no errors */
+        mReviewsEmptyView = (TextView) findViewById(R.id.reviews_empty_view);
+
+        // Loading indicator will be shown as data loads
+        mReviewsLoadingIndicator = (ProgressBar) findViewById(R.id.reviews_loading_indicator);
+
+        // Set a GridLayoutManager with default vertical orientation and 2 columns
+        LinearLayoutManager reviewsLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        // Set the Layout Manager to the RecyclerView
+        mReviewsRecyclerView.setLayoutManager(reviewsLinearLayoutManager);
+
+        // Setting to improve performance if changes in content do not change in child layout size
+        mReviewsRecyclerView.setHasFixedSize(true);
+
+        // Call the constructor of CustomAdapter to send the reference and data to the Adapter
+        mReviewsAdapter = new ReviewsAdapter(MovieDetail.this, new ArrayList<ReviewListItem>());
+
+        // Set the adapter on the {@link RecyclerView}
+        // so the list can be populated in the user interface
+        mReviewsRecyclerView.setAdapter(mReviewsAdapter);
+
+        Log.v(LOG_TAG, "Adapter set on recycler view.");
+
+        /* Once all of our views are setup, we can load the movie data. */
+        loadReviews();
+
+        Log.v(LOG_TAG, "loadReviewscalled.");
+
+        // Set up Trailers Recycler View
+
+        // Get a reference to the RecyclerView
+        mTrailersRecyclerView = findViewById(R.id.recycler_view);
+
+        Log.v(LOG_TAG, "Recycler view found.");
+
+        /* This TextView is used to display errors and will be hidden if there are no errors */
+        mTrailersEmptyView = (TextView) findViewById(R.id.trailers_empty_view);
+
+        // Loading indicator will be shown as data loads
+        mTrailersLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+
+        // Set a GridLayoutManager with default vertical orientation and 2 columns
+        LinearLayoutManager trailersLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        // Set the Layout Manager to the RecyclerView
+        mTrailersRecyclerView.setLayoutManager(trailersLinearLayoutManager);
+
+        // Setting to improve performance if changes in content do not change in child layout size
+        mTrailersRecyclerView.setHasFixedSize(true);
+
+        // Call the constructor of CustomAdapter to send the reference and data to the Adapter
+        mTrailersAdapter = new TrailersAdapter(MovieDetail.this, new ArrayList<TrailerListItem>());
+
+        // Set the adapter on the {@link RecyclerView}
+        // so the list can be populated in the user interface
+        mTrailersRecyclerView.setAdapter(mTrailersAdapter);
+
+        Log.v(LOG_TAG, "Adapter set on  trailer recycler view.");
+
+        /* Once all of our views are setup, we can load the trailer data. */
+        loadTrailers();
+
+        Log.v(LOG_TAG, "loadTrailers called.");
     }
 
     private void populateUI() {
@@ -123,6 +214,138 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
     }
+
+
+//////////////////////////////////////////// working on fetch data section for reviews, then will do trailers
+
+    private void loadReviews() {
+        showReviewsDataView();
+        Log.v(LOG_TAG, "showReviewsDataView called.");
+
+        new FetchReviewsTask().execute();
+
+        Log.v(LOG_TAG, "FetchReviewsTask called.");
+    }
+//
+    private void showReviewsDataView() {
+        mReviewsEmptyView.setVisibility(View.INVISIBLE);
+        /* Then, make sure the movie data is visible */
+        mReviewsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will make the error message visible and hide the movie
+     * View.
+     */
+    private void showErrorMessage() {
+        /* First, hide the currently visible data */
+        mReviewsRecyclerView.setVisibility(View.INVISIBLE);
+        /* Then, show the error */
+        mReviewsEmptyView.setVisibility(View.VISIBLE);
+    }
+
+    public class FetchReviewsTask extends AsyncTask<String, Void, List<ReviewListItem>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mReviewsLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<ReviewListItem> doInBackground(String... params) {
+
+            if (params.length == 0) {
+                return null;
+            }
+
+            try {
+                List<ReviewListItem> reviewListItems = ReviewsJsonUtils.fetchReviews();
+                Log.v(LOG_TAG, "fetchReviews called.");
+                return reviewListItems;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<ReviewListItem> reviewData) {
+            mReviewsLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (reviewData != null) {
+                showReviewsDataView();
+                mReviewsAdapter.setReviews(reviewData);
+            } else {
+                showErrorMessage();
+            }
+        }
+    }
+
+
+
+////////////////////////////////////// Fetch Trailers Task - for movies it is in MainActivity, maybe I can shorten this
+    private void loadTrailers() {
+        showTrailersDataView();
+        Log.v(LOG_TAG, "showTrailersDataView called.");
+
+        new FetchTrailersTask().execute();
+
+        Log.v(LOG_TAG, "FetchTrailersTask called.");
+    }
+
+    private void showTrailersDataView() {
+        mReviewsEmptyView.setVisibility(View.INVISIBLE);
+        /* Then, make sure the movie data is visible */
+        mReviewsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will make the error message visible and hide the movie
+     * View.
+     */
+    private void  showTrailersErrorMessage() {
+        /* First, hide the currently visible data */
+        mReviewsRecyclerView.setVisibility(View.INVISIBLE);
+        /* Then, show the error */
+        mReviewsEmptyView.setVisibility(View.VISIBLE);
+    }
+
+public class FetchTrailersTask extends AsyncTask<String, Void, List<TrailerListItem>> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mTrailersLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected List<TrailerListItem> doInBackground(String... params) {
+
+        if (params.length == 0) {
+            return null;
+        }
+
+        try {
+            List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData();
+            Log.v(LOG_TAG, "fetchTrailerData called.");
+            return trailerListItems;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(List<TrailerListItem> trailerData) {
+        mTrailersLoadingIndicator.setVisibility(View.INVISIBLE);
+        if (trailerData != null) {
+            showTrailersDataView();
+            mTrailersAdapter.setmTrailersList(trailerData);
+        } else {
+            showErrorMessage();
+        }
+    }
+    }
 }
-
-

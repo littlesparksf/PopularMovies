@@ -97,7 +97,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
      * and notifies the adapter to use the new values on it
      */
 
-    public void setFavorites(List<ReviewListItem> reviewList) {
+    public void setReviews(List<ReviewListItem> reviewList) {
         mReviewsList = reviewList;
         notifyDataSetChanged();
     }

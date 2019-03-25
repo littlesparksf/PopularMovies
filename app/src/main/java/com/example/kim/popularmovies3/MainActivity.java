@@ -48,6 +48,8 @@ import java.util.List;
         Log.v(LOG_TAG, "onCreate called.");
         Log.v(LOG_TAG, ON_CREATE);
 
+        // Main Recycler View
+
         // Get a reference to the RecyclerView
         mRecyclerView = findViewById(R.id.recycler_view);
 
@@ -81,6 +83,7 @@ import java.util.List;
          loadMovieData();
 
          Log.v(LOG_TAG, "loadMovieData called.");
+
     }
 
      /**
