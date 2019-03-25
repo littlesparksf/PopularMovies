@@ -1,6 +1,8 @@
 package com.example.kim.popularmovies3;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,21 +20,20 @@ import java.util.List;
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersViewHolder> {
 
     // Class variables for the List that holds task data and the Context
-    private List<MovieItem> mFavoriteMovies;
+    private List<TrailerListItem> mTrailersList;
     private Context mContext;
-    private static final String LOG_TAG = FavoriteAdapter.class.getSimpleName();
+    private static final String LOG_TAG = TrailersAdapter.class.getSimpleName();
 
     /**
      * Constructor for the TaskAdapter that initializes the Context.
      * @param context  the current Context
-     * @param favoriteMovies the ItemClickListener
+     * @param trailersList the ItemClickListener
      */
 
-    public TrailersAdapter(Context context, List<MovieItem> favoriteMovies) {
-        this.mFavoriteMovies = favoriteMovies;
+    public TrailersAdapter(Context context, List<TrailerListItem> trailersList) {
+        this.mTrailersList = trailersList;
         this.mContext = context;
     }
-
 
     /**
      * Called when ViewHolders are created to fill a RecyclerView.
@@ -63,15 +64,13 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
         Log.v(LOG_TAG, "onBindViewHolder called.");
 
         // Determine the values of the wanted data
-        MovieItem favoriteMovie = mFavoriteMovies.get(position);
-        String description = favoriteMovie.getOverview();
-        String title = favoriteMovie.getTitle();
-        String rating = favoriteMovie.getRating();
+        TrailerListItem movieTrailer = mTrailersList.get(position);
+        int trailerId = movieTrailer.getTrailerId();
+        String trailerTitle = movieTrailer.getTrailerTitle();
+        String trailerUrl  = movieTrailer.getTrailerUrl();
 
         //Set values
-        holder.favoriteOverviewView.setText(description);
-        holder.favoriteTitleView.setText(title);
-        holder.favoriteRatingView.setText(rating);
+        holder.trailerTitleTextView.setText(trailerTitle);
     }
 
     /**
@@ -80,14 +79,14 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     @Override
     public int getItemCount() {
-        if (mFavoriteMovies == null) {
+        if (mTrailersList == null) {
             return 0;
         }
-        return mFavoriteMovies.size();
+        return mTrailersList.size();
     }
 
-    public List<MovieItem> getFavoriteMovies() {
-        return mFavoriteMovies;
+    public List<TrailerListItem> getTrailers() {
+        return mTrailersList;
     }
 
 
@@ -96,8 +95,8 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
      * and notifies the adapter to use the new values on it
      */
 
-    public void setFavorites(List<MovieItem> favoriteMovies) {
-        mFavoriteMovies = favoriteMovies;
+    public void setmTrailersList(List<TrailerListItem> movieTrailers) {
+        mTrailersList = movieTrailers;
         notifyDataSetChanged();
     }
 
@@ -109,9 +108,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     class TrailersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Class variables for the task description and priority TextViews
-        TextView favoriteTitleView;
-        TextView favoriteOverviewView;
-        TextView favoriteRatingView;
+        TextView trailerTitleTextView;
 
         /**
          * Constructor for the TaskViewHolders.
@@ -121,19 +118,19 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
         public TrailersViewHolder(View itemView) {
             super(itemView);
 
-            favoriteTitleView = itemView.findViewById(R.id.favorite_title);
-            favoriteOverviewView = itemView.findViewById(R.id.favorite_overview);
-            favoriteRatingView = itemView.findViewById(R.id.favorite_rating);
+            trailerTitleTextView = itemView.findViewById(R.id.trailer_movie_title);
 
             itemView.setOnClickListener(this);
         }
 
-
         @Override
-
         public void onClick(View view) {
-            int elementId = mFavoriteMovies.get(getAdapterPosition()).getId();
-            //mItemClickListener.onItemClickListener(elementId);
+            int trailerPosition = getAdapterPosition();
+            TrailerListItem trailer = mTrailersList.get(trailerPosition);
+
+            String url = trailer.getTrailerUrl();
+            Intent trailerUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            mContext.startActivity(trailerUrlIntent);
         }
     }
 }
