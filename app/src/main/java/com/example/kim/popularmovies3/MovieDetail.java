@@ -27,6 +27,7 @@ import java.util.List;
 public class MovieDetail extends AppCompatActivity {
 
     public static final int DEFAULT_FAVORITE_ID = -1;
+    int favoriteId = DEFAULT_FAVORITE_ID;
 
     // Recycler view variables
     private RecyclerView mReviewsRecyclerView;
@@ -69,22 +70,30 @@ public class MovieDetail extends AppCompatActivity {
                 .load(posterUrl)
                 .into(posterDetailView);
 
+        /**Dealing with favorite database here */
+
+        mDb = AppDatabase.getInstance(getApplicationContext());
+
         mFavoriteCheckbox = findViewById(R.id.add_favorite_checkbox);
-        mFavoriteCheckbox.setOnClickListener(new View.OnClickListener(){
+        mFavoriteCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 onFavoriteChecked();
             }
         });
+
+        if (favoriteId !=DEFAULT_FAVORITE_ID) {
+            mFavoriteCheckbox.setChecked(true);
+        }
 
         // Need to trigger api calls for reviews and trailers, then set up json utils for them.
 
         // Set up Reviews Recycler View
 
         //  Get a reference to the RecyclerView
-        mReviewsRecyclerView = findViewById(R.id.trailers_recycler_view);
+        mReviewsRecyclerView = findViewById(R.id.reviews_recycler_view);
 
-        Log.v(LOG_TAG, "Trailer recycler view found.");
+        Log.v(LOG_TAG, "Reviews recycler view found.");
 
         /* This TextView is used to display errors and will be hidden if there are no errors */
         mReviewsEmptyView = (TextView) findViewById(R.id.reviews_empty_view);
@@ -92,7 +101,7 @@ public class MovieDetail extends AppCompatActivity {
         // Loading indicator will be shown as data loads
         mReviewsLoadingIndicator = (ProgressBar) findViewById(R.id.reviews_loading_indicator);
 
-        // Set a GridLayoutManager with default vertical orientation and 2 columns
+        // Set a LinearLayoutManager
         LinearLayoutManager reviewsLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         // Set the Layout Manager to the RecyclerView
@@ -110,15 +119,15 @@ public class MovieDetail extends AppCompatActivity {
 
         Log.v(LOG_TAG, "Adapter set on recycler view.");
 
-        /* Once all of our views are setup, we can load the movie data. */
+        /* Once all of our views are setup, we can load the reviews data. */
         loadReviews();
 
         Log.v(LOG_TAG, "loadReviewscalled.");
 
-        // Set up Trailers Recycler View
+        /* Set up Trailers Recycler View */
 
-        // Get a reference to the RecyclerView
-        mTrailersRecyclerView = findViewById(R.id.recycler_view);
+        /* Get a reference to the RecyclerView */
+        mTrailersRecyclerView = findViewById(R.id.trailers_recycler_view);
 
         Log.v(LOG_TAG, "Recycler view found.");
 
@@ -126,9 +135,9 @@ public class MovieDetail extends AppCompatActivity {
         mTrailersEmptyView = (TextView) findViewById(R.id.trailers_empty_view);
 
         // Loading indicator will be shown as data loads
-        mTrailersLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        mTrailersLoadingIndicator = (ProgressBar) findViewById(R.id.trailers_loading_indicator);
 
-        // Set a GridLayoutManager with default vertical orientation and 2 columns
+        // Set a LinearLayoutManager for trailers
         LinearLayoutManager trailersLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         // Set the Layout Manager to the RecyclerView
@@ -185,11 +194,10 @@ public class MovieDetail extends AppCompatActivity {
         movieReleaseDateView.setText(movieReleaseDate);
     }
 
-// Checkbox when clicked adds the corresponding movie to the favorite movie list
+    // Checkbox when clicked adds the corresponding movie to the favorite movie list
     public void onFavoriteChecked() {
 
         // Need to get title and overview of movie associated with favorite checkbox
-        final int favoriteId = movieItem.getId();
         String favoriteTitle = movieItem.getTitle();
         String favoriteReleaseDate = movieItem.getReleaseDate();
         String favoriteImage = movieItem.getImage();
@@ -202,21 +210,21 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void run() {
                 if (favoriteId == DEFAULT_FAVORITE_ID) {
-                    // if favorite is new, insert new favorite
-                    mDb.favoriteDao().insertTask(favorite);
-                } else {
-                    // if the favorite is already in the list, re-insert in case of update
-                    // What if favorite is changed from checked to unchecked? Need to remove it.
-                    favorite.setId(favoriteId);
-                    mDb.favoriteDao().updateFavorite(favorite);
+                    // if favorite is new, assign it movieItem id and insert new favorite
+                    favoriteId = movieItem.getId();
+                    Log.v(LOG_TAG, "getId called");
+                    mDb.favoriteDao().insertFavorite(favorite);
+                } else if (favoriteId != DEFAULT_FAVORITE_ID) {
+                    // if the favorite is already in the list and so does not have default id, remove when checkbox is clicked
+                    mDb.favoriteDao().deleteFavorite(favorite);
+                    Log.v(LOG_TAG, "deleteFavorite called.");
+                    //mFavoriteCheckbox.setChecked(false);
                 }
-                finish();
             }
         });
     }
 
-
-//////////////////////////////////////////// working on fetch data section for reviews, then will do trailers
+    /* Fetching review data */
 
     private void loadReviews() {
         showReviewsDataView();
@@ -226,7 +234,7 @@ public class MovieDetail extends AppCompatActivity {
 
         Log.v(LOG_TAG, "FetchReviewsTask called.");
     }
-//
+
     private void showReviewsDataView() {
         mReviewsEmptyView.setVisibility(View.INVISIBLE);
         /* Then, make sure the movie data is visible */
@@ -282,15 +290,13 @@ public class MovieDetail extends AppCompatActivity {
         }
     }
 
+    /* Fetching trailer data */
 
-
-////////////////////////////////////// Fetch Trailers Task - for movies it is in MainActivity, maybe I can shorten this
     private void loadTrailers() {
         showTrailersDataView();
         Log.v(LOG_TAG, "showTrailersDataView called.");
 
         new FetchTrailersTask().execute();
-
         Log.v(LOG_TAG, "FetchTrailersTask called.");
     }
 
@@ -304,48 +310,49 @@ public class MovieDetail extends AppCompatActivity {
      * This method will make the error message visible and hide the movie
      * View.
      */
-    private void  showTrailersErrorMessage() {
+    private void showTrailersErrorMessage() {
         /* First, hide the currently visible data */
         mReviewsRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mReviewsEmptyView.setVisibility(View.VISIBLE);
     }
 
-public class FetchTrailersTask extends AsyncTask<String, Void, List<TrailerListItem>> {
+    public class FetchTrailersTask extends AsyncTask<String, Void, List<TrailerListItem>> {
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        mTrailersLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected List<TrailerListItem> doInBackground(String... params) {
-
-        if (params.length == 0) {
-            return null;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mTrailersLoadingIndicator.setVisibility(View.VISIBLE);
+            Log.v(LOG_TAG, "setVisibility called on trailers loading indicator.");
         }
 
-        try {
-            List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData();
-            Log.v(LOG_TAG, "fetchTrailerData called.");
-            return trailerListItems;
+        @Override
+        protected List<TrailerListItem> doInBackground(String... params) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+            if (params.length == 0) {
+                return null;
+            }
 
-    @Override
-    protected void onPostExecute(List<TrailerListItem> trailerData) {
-        mTrailersLoadingIndicator.setVisibility(View.INVISIBLE);
-        if (trailerData != null) {
-            showTrailersDataView();
-            mTrailersAdapter.setmTrailersList(trailerData);
-        } else {
-            showErrorMessage();
+            try {
+                List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData();
+                Log.v(LOG_TAG, "fetchTrailerData called.");
+                return trailerListItems;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
-    }
+
+        @Override
+        protected void onPostExecute(List<TrailerListItem> trailerData) {
+            mTrailersLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (trailerData != null) {
+                showTrailersDataView();
+                mTrailersAdapter.setmTrailersList(trailerData);
+            } else {
+                showErrorMessage();
+            }
+        }
     }
 }
