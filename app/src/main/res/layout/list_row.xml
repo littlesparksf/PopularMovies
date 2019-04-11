@@ -10,8 +10,4 @@
         android:layout_height="150dp"
         android:src="@drawable/cat"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </RelativeLayout>

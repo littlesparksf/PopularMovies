@@ -21,13 +21,13 @@ public interface FavoriteDao {
     LiveData<List<MovieItem>> loadAllFavorites();
 
     @Insert
-    void insertTask(MovieItem newFavoriteMovie);
+    void insertFavorite(MovieItem newFavoriteMovie);
 
     @Update(onConflict = REPLACE)
     void updateFavorite(MovieItem updatedFavoriteMovie);
 
     @Delete
-    void deleteTask(MovieItem existingFavoriteMovie);
+    void deleteFavorite(MovieItem existingFavoriteMovie);
 
     @Query("SELECT * FROM favoriteMovies WHERE id = :id")
     LiveData<MovieItem> loadTaskById(int id);
