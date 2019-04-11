@@ -218,7 +218,7 @@ public class MovieDetail extends AppCompatActivity {
                     // if the favorite is already in the list and so does not have default id, remove when checkbox is clicked
                     mDb.favoriteDao().deleteFavorite(favorite);
                     Log.v(LOG_TAG, "deleteFavorite called.");
-                    //mFavoriteCheckbox.setChecked(false);
+                    mFavoriteCheckbox.setChecked(false);
                 }
             }
         });
