@@ -17,6 +17,12 @@ package com.example.kim.popularmovies3.database;
 @Dao
 public interface FavoriteDao {
 
+    @Query("DELETE FROM favoriteMovies WHERE title = :title")
+    void deleteByMovieTitle(String title);
+
+    @Query("SELECT * FROM favoriteMovies WHERE title = :title")
+    MovieItem findMovieById(String title);
+
     @Query("SELECT * FROM favoriteMovies ORDER BY id")
     LiveData<List<MovieItem>> loadAllFavorites();
 

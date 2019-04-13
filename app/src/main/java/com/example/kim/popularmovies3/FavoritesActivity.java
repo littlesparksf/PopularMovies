@@ -68,7 +68,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
                         List<MovieItem> tasks = mAdapter.getFavoriteMovies();
-                        mDb.favoriteDao().deleteFavorite(tasks.get(position));
+                        mDb.favoriteDao().deleteFavorite( tasks.get(position));
                     }
 
                 });

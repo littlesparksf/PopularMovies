@@ -26,9 +26,6 @@ import java.util.List;
 
 public class MovieDetail extends AppCompatActivity {
 
-    public static final int DEFAULT_FAVORITE_ID = -1;
-    int favoriteId = DEFAULT_FAVORITE_ID;
-
     // Recycler view variables
     private RecyclerView mReviewsRecyclerView;
     private ReviewsAdapter mReviewsAdapter;
@@ -74,6 +71,8 @@ public class MovieDetail extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
+        checkIfFav(movieItem.getTitle());
+
         mFavoriteCheckbox = findViewById(R.id.add_favorite_checkbox);
         mFavoriteCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +81,8 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-        if (favoriteId !=DEFAULT_FAVORITE_ID) {
-            mFavoriteCheckbox.setChecked(true);
-        }
 
-        // Need to trigger api calls for reviews and trailers, then set up json utils for them.
+        // Here we trigger api calls for reviews and trailers using json utils for them.
 
         // Set up Reviews Recycler View
 
@@ -194,10 +190,26 @@ public class MovieDetail extends AppCompatActivity {
         movieReleaseDateView.setText(movieReleaseDate);
     }
 
+    // Check to see if movie is in the database
+    private void checkIfFav(final String title){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override public void run() {
+                final MovieItem movie = mDb.favoriteDao().findMovieById(title);
+                runOnUiThread(new Runnable() { @Override public void run() {
+                    if(movie == null){ Log.d("!!!!!!!!", "is null");
+                    mFavoriteCheckbox.setChecked(false);
+                    }else {
+                        Log.d("!!!!!!!!", "is not null");
+                        mFavoriteCheckbox.setChecked(true); }
+                }});
+            } });
+    }
+
     // Checkbox when clicked adds the corresponding movie to the favorite movie list
     public void onFavoriteChecked() {
 
         // Need to get title and overview of movie associated with favorite checkbox
+        final int favoriteId = movieItem.getId();
         String favoriteTitle = movieItem.getTitle();
         String favoriteReleaseDate = movieItem.getReleaseDate();
         String favoriteImage = movieItem.getImage();
@@ -209,16 +221,14 @@ public class MovieDetail extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (favoriteId == DEFAULT_FAVORITE_ID) {
-                    // if favorite is new, assign it movieItem id and insert new favorite
-                    favoriteId = movieItem.getId();
-                    Log.v(LOG_TAG, "getId called");
+                if (mFavoriteCheckbox.isChecked()) {
+                    // if favorite is new, insert new favorite
                     mDb.favoriteDao().insertFavorite(favorite);
-                } else if (favoriteId != DEFAULT_FAVORITE_ID) {
-                    // if the favorite is already in the list and so does not have default id, remove when checkbox is clicked
-                    mDb.favoriteDao().deleteFavorite(favorite);
+                    Log.v(LOG_TAG, "insertFavorite called");
+                } else {
+                    // if the favorite is already in the list, remove when checkbox is clicked
+                    mDb.favoriteDao().deleteByMovieTitle(favorite.getTitle());
                     Log.v(LOG_TAG, "deleteFavorite called.");
-                    mFavoriteCheckbox.setChecked(false);
                 }
             }
         });
@@ -256,8 +266,10 @@ public class MovieDetail extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            Log.v(LOG_TAG, "onPreExecute called in FetchReviewsTask.");
             super.onPreExecute();
             mReviewsLoadingIndicator.setVisibility(View.VISIBLE);
+            Log.v(LOG_TAG, "setVisibility called on reviews loading indicator.");
         }
 
         @Override
@@ -321,6 +333,7 @@ public class MovieDetail extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            Log.v(LOG_TAG, "onPreExecute called in FetchReviewsTask.");
             super.onPreExecute();
             mTrailersLoadingIndicator.setVisibility(View.VISIBLE);
             Log.v(LOG_TAG, "setVisibility called on trailers loading indicator.");
