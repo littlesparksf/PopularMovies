@@ -255,7 +255,7 @@ public class MovieDetail extends AppCompatActivity {
      * This method will make the error message visible and hide the movie
      * View.
      */
-    private void showErrorMessage() {
+    private void showReviewsErrorMessage() {
         /* First, hide the currently visible data */
         mReviewsRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
@@ -275,10 +275,6 @@ public class MovieDetail extends AppCompatActivity {
         @Override
         protected List<ReviewListItem> doInBackground(String... params) {
 
-            if (params.length == 0) {
-                return null;
-            }
-
             try {
                 List<ReviewListItem> reviewListItems = ReviewsJsonUtils.fetchReviews();
                 Log.v(LOG_TAG, "fetchReviews called.");
@@ -297,7 +293,7 @@ public class MovieDetail extends AppCompatActivity {
                 showReviewsDataView();
                 mReviewsAdapter.setReviews(reviewData);
             } else {
-                showErrorMessage();
+                showReviewsErrorMessage();
             }
         }
     }
@@ -313,9 +309,9 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     private void showTrailersDataView() {
-        mReviewsEmptyView.setVisibility(View.INVISIBLE);
+        mTrailersEmptyView.setVisibility(View.INVISIBLE);
         /* Then, make sure the movie data is visible */
-        mReviewsRecyclerView.setVisibility(View.VISIBLE);
+        mTrailersRecyclerView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -324,9 +320,9 @@ public class MovieDetail extends AppCompatActivity {
      */
     private void showTrailersErrorMessage() {
         /* First, hide the currently visible data */
-        mReviewsRecyclerView.setVisibility(View.INVISIBLE);
+        mTrailersRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
-        mReviewsEmptyView.setVisibility(View.VISIBLE);
+        mTrailersEmptyView.setVisibility(View.VISIBLE);
     }
 
     public class FetchTrailersTask extends AsyncTask<String, Void, List<TrailerListItem>> {
@@ -341,10 +337,6 @@ public class MovieDetail extends AppCompatActivity {
 
         @Override
         protected List<TrailerListItem> doInBackground(String... params) {
-
-            if (params.length == 0) {
-                return null;
-            }
 
             try {
                 List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData();
@@ -364,7 +356,7 @@ public class MovieDetail extends AppCompatActivity {
                 showTrailersDataView();
                 mTrailersAdapter.setmTrailersList(trailerData);
             } else {
-                showErrorMessage();
+                showTrailersErrorMessage();
             }
         }
     }
