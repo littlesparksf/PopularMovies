@@ -189,6 +189,9 @@ public final class MovieJsonUtils {
                 // Get a single MovieItem at position i within the list of MovieItems
                 JSONObject currentMovieItem = movieItemArray.getJSONObject(i);
 
+                // Extract the value for the key called "id"
+                int id = currentMovieItem.getInt("id");
+
                 // Extract the value for the key called "title"
                 String title = currentMovieItem.getString("title");
 
@@ -206,7 +209,7 @@ public final class MovieJsonUtils {
 
                 // Create a new {@link MovieItem} object with the image, title and synopsis
                 // from the JSON response.
-                MovieItem movieItem = new MovieItem(title, releaseDate, image, rating, overview);
+                MovieItem movieItem = new MovieItem(id, title, releaseDate, image, rating, overview);
 
                 // Add the new {@link MovieItem} to the list of MovieItems.
                 movieItemList.add(movieItem);

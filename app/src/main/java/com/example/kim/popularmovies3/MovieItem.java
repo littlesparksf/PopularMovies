@@ -98,6 +98,7 @@ public class MovieItem implements Parcelable {
 
     // Parcelling part
     public MovieItem(Parcel in) {
+        this.id = in.readInt();
         this.title = in.readString();
         this.image = in.readString();
         this.overview = in.readString();
@@ -112,6 +113,7 @@ public class MovieItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeString(this.image);
         dest.writeString(this.overview);

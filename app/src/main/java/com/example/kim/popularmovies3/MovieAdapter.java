@@ -95,7 +95,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             MovieItem movie = mMovieItemList.get(moviePosition);
 
             Intent intent = new Intent(imageView.getContext(), MovieDetail.class);
-            intent.putExtra ("movie", new MovieItem(movie.getTitle(), movie.getReleaseDate(), movie.getImage(), movie.getRating(), movie.getOverview()));
+            intent.putExtra ("movie", new MovieItem(movie.getId(), movie.getTitle(), movie.getReleaseDate(), movie.getImage(), movie.getRating(), movie.getOverview()));
             imageView.getContext().startActivity(intent);
         }
     }

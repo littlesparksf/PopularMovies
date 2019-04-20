@@ -43,6 +43,7 @@ public class MovieDetail extends AppCompatActivity {
     MovieItem movieItem = null;
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     public CheckBox mFavoriteCheckbox;
+    public String movieIdString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,11 @@ public class MovieDetail extends AppCompatActivity {
 
         android.os.Bundle data = getIntent().getExtras();
         movieItem = data.getParcelable("movie");
+
+        // Get movieId for fetching reviews and trailers
+        int movieId = movieItem.getId();
+        movieIdString = Integer.toString(movieId);
+        Log.v(LOG_TAG, "movieId toString called: " + movieIdString + movieId);
 
         // Get poster path
         String posterPath = movieItem.getImage();
@@ -275,9 +281,6 @@ public class MovieDetail extends AppCompatActivity {
         protected List<ReviewListItem> doInBackground(String... params) {
 
             try {
-                int movieId = movieItem.getId();
-                String movieIdString = Integer.toString(movieId);
-                Log.v(LOG_TAG, "movieId toString called: " + movieId);
                 List<ReviewListItem> reviewListItems = ReviewsJsonUtils.fetchReviews(movieIdString);
                 Log.v(LOG_TAG, "fetchReviews called.");
                 return reviewListItems;

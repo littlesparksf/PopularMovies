@@ -66,7 +66,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
         // Determine the values of the wanted data
         ReviewListItem movieReview = mReviewsList.get(position);
-        int description = movieReview.getReviewId();
+        int reviewId = movieReview.getReviewId();
         String reviewAuthor = movieReview.getAuthor();
         String reviewText = movieReview.getReviewText();
         String reviewUrl = movieReview.getReviewUrl();
