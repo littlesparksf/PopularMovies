@@ -1,8 +1,10 @@
 package com.example.kim.popularmovies3;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import android.content.Intent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,9 +33,7 @@ public final class ReviewsJsonUtils {
     // Example API requests:
     // https://api.themoviedb.org/3/movie/550?api_key="api_key"
     // https://api.themoviedb.org/3/movie/popular?api_key=<<api_key>>&language=en-US&page=1
-
-    //Need to get this from detail activity
-    private static final String MOVIE_ID = "id";
+    // https://api.themoviedb.org/3/movie/401478/reviews?api_key=4d9c9de3bdf0d3b6837c49c086e3b190
 
     // Put this in strings.xml
     private static final String REVIEWS = "reviews";
@@ -54,11 +54,12 @@ public final class ReviewsJsonUtils {
      * Builds the URL used to query The MovieDB.
      * @return The URL to use to query the MovieDB server.
      */
-    public static URL buildUrl() {
+    public static URL buildUrl(String MOVIE_ID) {
+
         Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(MOVIE_ID)
+                .appendPath(REVIEWS)
                 .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("id", MOVIE_ID)
-                .appendQueryParameter("reviews", REVIEWS)
                 .build();
 
         URL url = null;
@@ -74,10 +75,10 @@ public final class ReviewsJsonUtils {
     /**
      * Query the MovieDB dataset and return a list of {@link ReviewListItem} objects.
      */
-    public static List<ReviewListItem> fetchReviews() {
+    public static List<ReviewListItem> fetchReviews(String movieId) {
 
         // Create URL object
-        URL url = buildUrl();
+        URL url = buildUrl(movieId);
         Log.v(LOG_TAG, "buildUrl called.");
 
         // Perform HTTP request to the URL and receive a JSON response back

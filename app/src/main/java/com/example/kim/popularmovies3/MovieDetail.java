@@ -2,6 +2,7 @@ package com.example.kim.popularmovies3;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,8 +82,6 @@ public class MovieDetail extends AppCompatActivity {
             }
         });
 
-
-        // Here we trigger api calls for reviews and trailers using json utils for them.
 
         // Set up Reviews Recycler View
 
@@ -276,7 +275,10 @@ public class MovieDetail extends AppCompatActivity {
         protected List<ReviewListItem> doInBackground(String... params) {
 
             try {
-                List<ReviewListItem> reviewListItems = ReviewsJsonUtils.fetchReviews();
+                int movieId = movieItem.getId();
+                String movieIdString = Integer.toString(movieId);
+                Log.v(LOG_TAG, "movieId toString called: " + movieId);
+                List<ReviewListItem> reviewListItems = ReviewsJsonUtils.fetchReviews(movieIdString);
                 Log.v(LOG_TAG, "fetchReviews called.");
                 return reviewListItems;
 
