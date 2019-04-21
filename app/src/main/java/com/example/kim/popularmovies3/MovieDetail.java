@@ -344,7 +344,7 @@ public class MovieDetail extends AppCompatActivity {
         protected List<TrailerListItem> doInBackground(String... params) {
 
             try {
-                List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData();
+                List<TrailerListItem> trailerListItems = TrailersJsonUtils.fetchTrailerData(movieIdString);
                 Log.v(LOG_TAG, "fetchTrailerData called.");
                 return trailerListItems;
 

@@ -54,12 +54,14 @@ public final class TrailersJsonUtils {
      * Builds the URL used to query The MovieDB.
      * @return The URL to use to query the MovieDB server.
      */
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("id", MOVIE_ID)
-                .appendQueryParameter("videos", VIDEOS)
-                .build();
+
+        public static URL buildUrl(String MOVIE_ID) {
+
+            Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                    .appendPath(MOVIE_ID)
+                    .appendPath(VIDEOS)
+                    .appendQueryParameter("api_key", API_KEY)
+                    .build();
 
         URL url = null;
         try {
@@ -74,10 +76,10 @@ public final class TrailersJsonUtils {
     /**
      * Query the MovieDB dataset and return a list of {@link MovieItem} objects.
      */
-    public static List<TrailerListItem> fetchTrailerData() {
+    public static List<TrailerListItem> fetchTrailerData(String movieId) {
 
         // Create URL object
-        URL url = buildUrl();
+        URL url = buildUrl(movieId);
         Log.v(LOG_TAG, "buildUrl called.");
 
         // Perform HTTP request to the URL and receive a JSON response back

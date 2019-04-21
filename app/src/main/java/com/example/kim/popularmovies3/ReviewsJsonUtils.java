@@ -51,7 +51,7 @@ public final class ReviewsJsonUtils {
     }
 
     /**
-     * Builds the URL used to query The MovieDB.
+     * Builds the URL used to query The MovieDB for reviews of selected movie.
      * @return The URL to use to query the MovieDB server.
      */
     public static URL buildUrl(String MOVIE_ID) {
