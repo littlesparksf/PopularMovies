@@ -44,9 +44,11 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     @Override
     public TrailersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        Log.v(LOG_TAG, "OnCreateViewHolder called for trailers");
+
         // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.favorite_list_row, parent, false);
+                .inflate(R.layout.trailer_list_row, parent, false);
 
         return new TrailersViewHolder(view);
     }
@@ -61,7 +63,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     @Override
     public void onBindViewHolder(TrailersViewHolder holder, int position) {
 
-        Log.v(LOG_TAG, "onBindViewHolder called.");
+        Log.v(LOG_TAG, "onBindViewHolder called for trailers.");
 
         // Determine the values of the wanted data
         TrailerListItem movieTrailer = mTrailersList.get(position);
