@@ -198,7 +198,7 @@ public final class TrailersJsonUtils {
                 JSONObject currentTrailerItem = trailerArray.getJSONObject(i);
 
                 // Extract the value for the key called "title"
-                String id = currentTrailerItem.getString("id");
+                //String id = currentTrailerItem.getString("id");
 
                 // Extract the value for the key called "release_date"
                 String title = currentTrailerItem.getString("name");
@@ -209,7 +209,7 @@ public final class TrailersJsonUtils {
 
                 // Create a new {@link MovieItem} object with the image, title and synopsis
                 // from the JSON response.
-                TrailerListItem trailerItem = new TrailerListItem(id, title, url);
+                TrailerListItem trailerItem = new TrailerListItem(title, url);
 
                 // Add the new {@link MovieItem} to the list of MovieItems.
                 trailersList.add(trailerItem);

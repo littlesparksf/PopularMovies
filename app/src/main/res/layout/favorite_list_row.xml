@@ -19,9 +19,8 @@
         android:layout_height="wrap_content"/>
 
     <!-- Not sure why I need the following id's in this file to make app run. These fields should be in the movie detail's
-    review and trailer recycler views, inside the review_list_row.xml and trailer_list_row.xml files. -->
-
-    <TextView
+    review and trailer recycler views, inside the review_list_row.xml and trailer_list_row.xml files.
+        <TextView
         android:id="@+id/review_list_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -35,5 +34,8 @@
         android:id="@+id/trailer_movie_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        -->
+
+
 
 </RelativeLayout>

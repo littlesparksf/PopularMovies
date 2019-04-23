@@ -47,7 +47,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
         // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.favorite_list_row, parent, false);
+                .inflate(R.layout.review_list_row, parent, false);
 
         return new ReviewsViewHolder(view);
     }

@@ -11,12 +11,12 @@ public class TrailerListItem {
     public TrailerListItem() {
     }
 
-    public TrailerListItem(String reviewAuthor, String reviewText, String reviewUrl) {
+    public TrailerListItem(String trailerTitle, String trailerUrl) {
         this.trailerTitle = trailerTitle;
         this.trailerUrl = trailerUrl;
     }
 
-    public TrailerListItem(int reviewId, String reviewAuthor, String reviewText, String reviewUrl) {
+    public TrailerListItem(int trailerId, String trailerTitle, String trailerUrl) {
         this.trailerId = trailerId;
         this.trailerTitle = trailerTitle;
         this.trailerUrl = trailerUrl;

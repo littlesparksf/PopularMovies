@@ -48,13 +48,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reviews_list_header"/>
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:textAppearanceMedium" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/reviews_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
 
         <!-- Empty view is only visible when the list has no items. -->
@@ -80,10 +87,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/trailers_list_header"/>
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:textAppearanceMedium" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/trailers_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             android:layout_centerInParent="true"/>
 
         <!-- Empty view is only visible when the list has no items. -->

@@ -70,5 +70,11 @@
 
     <string name="favorites_menu_item">Favorites</string>
 
+    <!-- Strings for MovieDetail Activity -->
+
+    <string name="reviews_list_header">Reviews</string>
+
+    <string name="trailers_list_header">Trailers</string>
+
 
 </resources>
