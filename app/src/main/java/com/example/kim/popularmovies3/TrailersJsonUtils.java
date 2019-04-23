@@ -31,9 +31,7 @@ public final class TrailersJsonUtils {
     // Example API requests:
     // https://api.themoviedb.org/3/movie/550?api_key="api_key"
     // https://api.themoviedb.org/3/movie/popular?api_key=<<api_key>>&language=en-US&page=1
-
-    //Need to get this from detail activity
-    private static final String MOVIE_ID = "id";
+    // https://api.themoviedb.org/3/movie/401478/reviews?api_key=4d9c9de3bdf0d3b6837c49c086e3b190
 
     // Put this in strings.xml
     private static final String VIDEOS = "videos";
@@ -203,15 +201,15 @@ public final class TrailersJsonUtils {
                 // Extract the value for the key called "release_date"
                 String title = currentTrailerItem.getString("name");
 
-                // Extract the value for the key called "site"
+                // Extract the value for the key called "key"
                 // not sure if this is what I need here - just says "YouTube" not url
-                String url = currentTrailerItem.getString("site");
+                String urlKey = currentTrailerItem.getString("key");
 
-                // Create a new {@link MovieItem} object with the image, title and synopsis
+                // Create a new {@link TrailerListItem} object with the image, title and synopsis
                 // from the JSON response.
-                TrailerListItem trailerItem = new TrailerListItem(title, url);
+                TrailerListItem trailerItem = new TrailerListItem(title, urlKey);
 
-                // Add the new {@link MovieItem} to the list of MovieItems.
+                // Add the new {@link TrailerListItem} to the list of MovieItems.
                 trailersList.add(trailerItem);
             }
 

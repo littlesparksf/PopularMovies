@@ -67,9 +67,9 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
         // Determine the values of the wanted data
         TrailerListItem movieTrailer = mTrailersList.get(position);
-        int trailerId = movieTrailer.getTrailerId();
         String trailerTitle = movieTrailer.getTrailerTitle();
-        String trailerUrl  = movieTrailer.getTrailerUrl();
+        //int trailerId = movieTrailer.getTrailerId();
+        //String trailerUrlKey  = movieTrailer.getTrailerUrlKey();
 
         //Set values
         holder.trailerTitleTextView.setText(trailerTitle);
@@ -130,7 +130,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
             int trailerPosition = getAdapterPosition();
             TrailerListItem trailer = mTrailersList.get(trailerPosition);
 
-            String url = trailer.getTrailerUrl();
+            String url = "https://www.youtube.com/watch?v=" + trailer.getTrailerUrlKey();
             Intent trailerUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             mContext.startActivity(trailerUrlIntent);
         }

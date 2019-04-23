@@ -3,7 +3,7 @@ package com.example.kim.popularmovies3;
 public class TrailerListItem {
     private int trailerId;
     private String trailerTitle;
-    private String trailerUrl;
+    private String trailerUrlKey;
 
     /**
      * No args constructor for use in serialization
@@ -11,15 +11,15 @@ public class TrailerListItem {
     public TrailerListItem() {
     }
 
-    public TrailerListItem(String trailerTitle, String trailerUrl) {
+    public TrailerListItem(String trailerTitle, String trailerUrlKey) {
         this.trailerTitle = trailerTitle;
-        this.trailerUrl = trailerUrl;
+        this.trailerUrlKey = trailerUrlKey;
     }
 
-    public TrailerListItem(int trailerId, String trailerTitle, String trailerUrl) {
+    public TrailerListItem(int trailerId, String trailerTitle, String trailerUrlKey) {
         this.trailerId = trailerId;
         this.trailerTitle = trailerTitle;
-        this.trailerUrl = trailerUrl;
+        this.trailerUrlKey = trailerUrlKey;
     }
 
     public int getTrailerId() { return trailerId; }
@@ -31,17 +31,17 @@ public class TrailerListItem {
         return trailerTitle;
     }
 
-    public void setTrailerTitle(String author) {
-        this.trailerTitle = author;
+    public void setTrailerTitle(String trailerTitle) {
+        this.trailerTitle = trailerTitle;
     }
 
 
-    public String getTrailerUrl() {
-        return trailerUrl;
+    public String getTrailerUrlKey() {
+        return trailerUrlKey;
     }
 
-    public void setTrailerUrl(String reviewText) {
-        this.trailerUrl = reviewText;
+    public void setTrailerUrlKey(String trailerUrlKey) {
+        this.trailerUrlKey = trailerUrlKey;
     }
 
 }
