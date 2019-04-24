@@ -1,4 +1,4 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.Objects;
 
 public class TrailerListItem {
     private int trailerId;

@@ -1,9 +1,10 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.JsonUtils;
 
-        import android.content.Context;
         import android.net.Uri;
         import android.text.TextUtils;
         import android.util.Log;
+
+        import com.example.kim.popularmovies3.Objects.MovieItem;
 
         import org.json.JSONArray;
         import org.json.JSONException;

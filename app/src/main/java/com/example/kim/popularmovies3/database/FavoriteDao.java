@@ -4,11 +4,10 @@ package com.example.kim.popularmovies3.database;
         import android.arch.persistence.room.Dao;
         import android.arch.persistence.room.Delete;
         import android.arch.persistence.room.Insert;
-        import android.arch.persistence.room.OnConflictStrategy;
         import android.arch.persistence.room.Query;
         import android.arch.persistence.room.Update;
 
-        import com.example.kim.popularmovies3.MovieItem;
+        import com.example.kim.popularmovies3.Objects.MovieItem;
 
         import java.util.List;
 

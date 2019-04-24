@@ -1,8 +1,11 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.JsonUtils;
 
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.kim.popularmovies3.Objects.MovieItem;
+import com.example.kim.popularmovies3.Objects.ReviewListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +26,7 @@ import java.util.List;
  * Helper methods related to requesting and receiving movie data from MovieDB.
  */
 
-public final class TrailersJsonUtils {
+public final class ReviewsJsonUtils {
 
     private static final String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
 
@@ -34,7 +37,7 @@ public final class TrailersJsonUtils {
     // https://api.themoviedb.org/3/movie/401478/reviews?api_key=4d9c9de3bdf0d3b6837c49c086e3b190
 
     // Put this in strings.xml
-    private static final String VIDEOS = "videos";
+    private static final String REVIEWS = "reviews";
 
     /** Tag for the log messages */
     private static final String LOG_TAG = MovieJsonUtils.class.getSimpleName();
@@ -45,21 +48,20 @@ public final class TrailersJsonUtils {
      * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
      */
 
-    private TrailersJsonUtils() {
+    private ReviewsJsonUtils() {
     }
 
     /**
-     * Builds the URL used to query The MovieDB.
+     * Builds the URL used to query The MovieDB for reviews of selected movie.
      * @return The URL to use to query the MovieDB server.
      */
+    public static URL buildUrl(String MOVIE_ID) {
 
-        public static URL buildUrl(String MOVIE_ID) {
-
-            Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                    .appendPath(MOVIE_ID)
-                    .appendPath(VIDEOS)
-                    .appendQueryParameter("api_key", API_KEY)
-                    .build();
+        Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(MOVIE_ID)
+                .appendPath(REVIEWS)
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
 
         URL url = null;
         try {
@@ -72,9 +74,9 @@ public final class TrailersJsonUtils {
     }
 
     /**
-     * Query the MovieDB dataset and return a list of {@link MovieItem} objects.
+     * Query the MovieDB dataset and return a list of {@link ReviewListItem} objects.
      */
-    public static List<TrailerListItem> fetchTrailerData(String movieId) {
+    public static List<ReviewListItem> fetchReviews(String movieId) {
 
         // Create URL object
         URL url = buildUrl(movieId);
@@ -91,11 +93,12 @@ public final class TrailersJsonUtils {
         Log.v(LOG_TAG, "Json Response: " + jsonResponse);
 
         // Extract relevant fields from the JSON response and create a list of {@link MovieItem}s
-        List<TrailerListItem> trailerList = extractFeatureFromJson(jsonResponse);
+        List<ReviewListItem> reviewListItems = extractFeatureFromJson(jsonResponse);
 
         Log.v(LOG_TAG, "List created.");
+
         // Return the list of {@link MovieItem}s
-        return trailerList;
+        return reviewListItems;
     }
 
     /**
@@ -170,14 +173,14 @@ public final class TrailersJsonUtils {
      * parsing the given JSON response.
      */
 
-    public static List<TrailerListItem> extractFeatureFromJson(String movieItemJSON) {
+    public static List<ReviewListItem> extractFeatureFromJson(String movieItemJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(movieItemJSON)) {
             return null;
         }
 
         // Create an empty ArrayList that we can start adding MovieItems to
-        List<TrailerListItem> trailersList = new ArrayList<>();
+        List<ReviewListItem> reviewsList = new ArrayList<>();
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
@@ -187,30 +190,29 @@ public final class TrailersJsonUtils {
 
             // Extract the JSONArray associated with the key called "features",
             // which represents a list of features (or MovieItems).
-            JSONArray trailerArray = baseJsonResponse.getJSONArray("results");
+            JSONArray reviewsArray = baseJsonResponse.getJSONArray("results");
 
             // For each MovieItem in the MovieItemArray, create an {@link MovieItem} object
-            for (int i = 0; i < trailerArray.length(); i++) {
+            for (int i = 0; i < reviewsArray.length(); i++) {
 
                 // Get a single MovieItem at position i within the list of MovieItems
-                JSONObject currentTrailerItem = trailerArray.getJSONObject(i);
+                JSONObject currentReview = reviewsArray.getJSONObject(i);
 
-                // Extract the value for the key called "title"
-                //String id = currentTrailerItem.getString("id");
+                // Extract the value for the key called "author"
+                String author = currentReview.getString("author");
 
-                // Extract the value for the key called "release_date"
-                String title = currentTrailerItem.getString("name");
+                // Extract the value for the key called "text"
+                String text = currentReview.getString("content");
 
-                // Extract the value for the key called "key"
-                // not sure if this is what I need here - just says "YouTube" not url
-                String urlKey = currentTrailerItem.getString("key");
+                // Extract the value for the key called "text"
+                String url = currentReview.getString("url");
 
-                // Create a new {@link TrailerListItem} object with the image, title and synopsis
+                // Create a new {@link MovieItem} object with the image, title and synopsis
                 // from the JSON response.
-                TrailerListItem trailerItem = new TrailerListItem(title, urlKey);
+                ReviewListItem reviewListItem = new ReviewListItem(author, text, url);
 
-                // Add the new {@link TrailerListItem} to the list of MovieItems.
-                trailersList.add(trailerItem);
+                // Add the new {@link MovieItem} to the list of MovieItems.
+                reviewsList.add(reviewListItem);
             }
 
         } catch (JSONException e) {
@@ -222,7 +224,7 @@ public final class TrailersJsonUtils {
 
         Log.v(LOG_TAG, "movieItemList created.");
 
-        // Return the list of earthquakes
-        return trailersList;
+        // Return the list of reviews
+        return reviewsList;
     }
 }

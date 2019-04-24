@@ -2,17 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.quakereport.EarthquakeActivity">
+    tools:context="com.example.android.popularmovies3.MainActivity">
+    <!--May need to change context to popularmovies4-->
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_launcher_foreground"
         android:orderInCategory="1"
         android:title="@string/settings_menu_item"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:orderInCategory="1"
-        android:title="@string/favorites_menu_item"
         app:showAsAction="ifRoom" />
 </menu>

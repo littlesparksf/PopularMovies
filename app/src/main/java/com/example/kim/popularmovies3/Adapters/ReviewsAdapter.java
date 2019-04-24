@@ -1,4 +1,4 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.Adapters;
 
         import android.content.Context;
         import android.content.Intent;
@@ -9,6 +9,9 @@ package com.example.kim.popularmovies3;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.TextView;
+
+        import com.example.kim.popularmovies3.R;
+        import com.example.kim.popularmovies3.Objects.ReviewListItem;
 
         import java.util.List;
 

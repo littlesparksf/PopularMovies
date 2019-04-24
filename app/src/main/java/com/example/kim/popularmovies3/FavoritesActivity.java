@@ -2,7 +2,6 @@ package com.example.kim.popularmovies3;
 
         import android.arch.lifecycle.Observer;
         import android.arch.lifecycle.ViewModelProviders;
-        import android.content.Context;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
         import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,9 @@ package com.example.kim.popularmovies3;
         import android.support.v7.widget.RecyclerView;
         import android.support.v7.widget.helper.ItemTouchHelper;
         import android.util.Log;
+
+        import com.example.kim.popularmovies3.Adapters.FavoriteAdapter;
+        import com.example.kim.popularmovies3.Objects.MovieItem;
         import com.example.kim.popularmovies3.database.AppDatabase;
 
         import java.util.ArrayList;

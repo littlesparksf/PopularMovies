@@ -3,11 +3,10 @@ package com.example.kim.popularmovies3.database;
         import android.arch.persistence.room.Database;
         import android.arch.persistence.room.Room;
         import android.arch.persistence.room.RoomDatabase;
-        import android.arch.persistence.room.TypeConverters;
         import android.content.Context;
         import android.util.Log;
 
-        import com.example.kim.popularmovies3.MovieItem;
+        import com.example.kim.popularmovies3.Objects.MovieItem;
 
 @Database(entities = {MovieItem.class}, version = 1, exportSchema = false)
 

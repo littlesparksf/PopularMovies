@@ -1,4 +1,4 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.Objects;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

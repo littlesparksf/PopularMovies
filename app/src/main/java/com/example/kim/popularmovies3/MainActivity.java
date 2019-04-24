@@ -1,25 +1,34 @@
- package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3;
 
-import android.content.Context;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Query;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.net.URL;
+import com.example.kim.popularmovies3.Adapters.MovieAdapter;
+import com.example.kim.popularmovies3.JsonUtils.MovieJsonUtils;
+import com.example.kim.popularmovies3.Objects.MovieItem;
+import com.example.kim.popularmovies3.database.AppDatabase;
+import com.example.kim.popularmovies3.database.FavoriteDao;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
  public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -29,6 +38,8 @@ import java.util.List;
      private TextView mEmptyStateTextView;
      private ProgressBar mLoadingIndicator;
      public String orderBy;
+     public AppDatabase mDb;
+     public MovieAdapter favoriteAdapter;
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
      /* Constant values for the names of each respective lifecycle callback */
@@ -67,6 +78,9 @@ import java.util.List;
         // Set the Layout Manager to the RecyclerView
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
+        mRecyclerView.addItemDecoration(decoration);
+
         // Setting to improve performance if changes in content do not change in child layout size
         mRecyclerView.setHasFixedSize(true);
 
@@ -78,6 +92,9 @@ import java.util.List;
         mRecyclerView.setAdapter(mAdapter);
 
         Log.v(LOG_TAG, "Adapter set on recycler view.");
+
+        // Database
+         mDb = AppDatabase.getInstance(getApplicationContext());
 
         /* Once all of our views are setup, we can load the movie data. */
          loadMovieData();
@@ -105,6 +122,12 @@ import java.util.List;
                  getString(R.string.settings_order_by_key),
                  getString(R.string.settings_order_by_default)
          );
+
+         // If order by favorites selected, show favorites
+         if (orderBy == "@string/settings_order_by_favorites_value") {
+             FavoriteViewModel favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+             LiveData<List<MovieItem>> favoriteMovies = favoriteViewModel.getFavorites();
+         }
 
          Log.v(LOG_TAG, "orderBy called  " + orderBy);
 

@@ -8,6 +8,8 @@
 
         <item>@string/settings_order_by_most_popular_label</item>
 
+        <item>@string/settings_order_by_favorites_label</item>
+
     </string-array>
 
 
@@ -16,6 +18,8 @@
         <item>@string/settings_order_by_top_rated_value</item>
 
         <item>@string/settings_order_by_most_popular_value</item>
+
+        <item>@string/settings_order_by_favorites_value</item>
 
     </string-array>
 

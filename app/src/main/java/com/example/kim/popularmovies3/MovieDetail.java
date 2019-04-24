@@ -1,13 +1,7 @@
 package com.example.kim.popularmovies3;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +12,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.kim.popularmovies3.Adapters.MovieAdapter;
+import com.example.kim.popularmovies3.Adapters.ReviewsAdapter;
+import com.example.kim.popularmovies3.Adapters.TrailersAdapter;
+import com.example.kim.popularmovies3.JsonUtils.ReviewsJsonUtils;
+import com.example.kim.popularmovies3.JsonUtils.TrailersJsonUtils;
+import com.example.kim.popularmovies3.Objects.MovieItem;
+import com.example.kim.popularmovies3.Objects.ReviewListItem;
+import com.example.kim.popularmovies3.Objects.TrailerListItem;
 import com.example.kim.popularmovies3.database.AppDatabase;
 import com.squareup.picasso.Picasso;
 

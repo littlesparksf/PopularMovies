@@ -5,6 +5,7 @@ import android.util.Log;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
+import com.example.kim.popularmovies3.Objects.MovieItem;
 import com.example.kim.popularmovies3.database.AppDatabase;
 
 import java.util.List;

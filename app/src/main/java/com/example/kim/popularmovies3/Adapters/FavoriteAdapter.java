@@ -1,4 +1,4 @@
-package com.example.kim.popularmovies3;
+package com.example.kim.popularmovies3.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.kim.popularmovies3.Objects.MovieItem;
+import com.example.kim.popularmovies3.R;
 
 import java.util.List;
 

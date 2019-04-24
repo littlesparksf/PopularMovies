@@ -48,18 +48,24 @@
     <string name="settings_order_by_default" translatable="false">@string/settings_order_by_most_popular_value</string>
 
 
-    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
+    <!-- Label for order-by most popular option [CHAR LIMIT=20] -->
 
     <string name="settings_order_by_most_popular_label">Most Popular</string>
 
     <string name="settings_order_by_most_popular_value" translatable="false">popular</string>
 
 
-    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+    <!-- Label for order-by top rated option [CHAR LIMIT=20] -->
 
     <string name="settings_order_by_top_rated_label">Top Rated</string>
 
     <string name="settings_order_by_top_rated_value" translatable="false">top_rated</string>
+
+    <!-- Label for order-by favorites id option [CHAR LIMIT=20] -->
+
+    <string name="settings_order_by_favorites_label">Favorites</string>
+
+    <string name="settings_order_by_favorites_value" translatable="false">favorite_movies</string>
 
 
     <!-- Strings for Favorites Activity -->
