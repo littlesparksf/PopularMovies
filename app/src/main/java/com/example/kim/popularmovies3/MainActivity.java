@@ -113,6 +113,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
          // Obtain a reference to the SharedPreferences file for this app
          SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+         Log.v(LOG_TAG, "Shared preferences called.");
 
          // And register to be notified of preference changes
          // So we know when the user has adjusted the query settings
@@ -122,20 +123,23 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
                  getString(R.string.settings_order_by_key),
                  getString(R.string.settings_order_by_default)
          );
+         Log.v(LOG_TAG, "orderBy called  " + orderBy);
 
          // If order by favorites selected, show favorites
          if (orderBy == "@string/settings_order_by_favorites_value") {
              FavoriteViewModel favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
              LiveData<List<MovieItem>> favoriteMovies = favoriteViewModel.getFavorites();
+             mLoadingIndicator.setVisibility(View.INVISIBLE);
+             if (favoriteMovies != null) {
+                 showMovieDataView();
+                 mAdapter.setMovieData((List<MovieItem>) favoriteMovies);
+             } else {
+                 showErrorMessage();
+             }
+         } else {
+             new FetchMovieTask().execute(orderBy);
+             Log.v(LOG_TAG, "FetchMovieTask called.");
          }
-
-         Log.v(LOG_TAG, "orderBy called  " + orderBy);
-
-         Log.v(LOG_TAG, "Shared preferences called.");
-
-         new FetchMovieTask().execute(orderBy);
-
-         Log.v(LOG_TAG, "FetchMovieTask called.");
      }
 
      private void showMovieDataView() {
