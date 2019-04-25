@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textAppearance="?android:textAppearanceMedium"
-        android:text="@string/error_message"/>
+        android:text="@string/error_message"
+        android:textColor="@color/colorAccent"/>
 
     <!-- Loading indicator for user feedback between queries to MovieDB -->
     <ProgressBar

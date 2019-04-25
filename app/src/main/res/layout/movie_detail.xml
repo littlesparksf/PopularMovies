@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reviews_list_header"/>
+            android:text="@string/reviews_list_header"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:textAppearanceMedium" />
 
@@ -90,7 +90,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/trailers_list_header"/>
+            android:text="@string/trailers_list_header"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:textAppearanceMedium" />
 

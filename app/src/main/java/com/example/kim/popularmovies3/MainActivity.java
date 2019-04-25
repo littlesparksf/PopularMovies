@@ -1,12 +1,14 @@
 package com.example.kim.popularmovies3;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Query;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -126,16 +128,22 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
          Log.v(LOG_TAG, "orderBy called  " + orderBy);
 
          // If order by favorites selected, show favorites
-         if (orderBy == "@string/settings_order_by_favorites_value") {
+         if (orderBy.equals(getString(R.string.settings_order_by_favorites_value))) {
              FavoriteViewModel favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
-             LiveData<List<MovieItem>> favoriteMovies = favoriteViewModel.getFavorites();
-             mLoadingIndicator.setVisibility(View.INVISIBLE);
-             if (favoriteMovies != null) {
-                 showMovieDataView();
-                 mAdapter.setMovieData((List<MovieItem>) favoriteMovies);
-             } else {
-                 showErrorMessage();
-             }
+             favoriteViewModel.getFavorites().observe(this, new Observer<List<MovieItem>>() {
+                 @Override
+                 public void onChanged(@Nullable List<MovieItem> favoriteMovies) {
+                     ;
+                     mLoadingIndicator.setVisibility(View.INVISIBLE);
+
+                     if (favoriteMovies != null) {
+                         mAdapter.setMovieData(favoriteMovies);
+                         mAdapter.notifyDataSetChanged();
+                     } else {
+                         showErrorMessage();
+                     }
+                 }
+             });
          } else {
              new FetchMovieTask().execute(orderBy);
              Log.v(LOG_TAG, "FetchMovieTask called.");

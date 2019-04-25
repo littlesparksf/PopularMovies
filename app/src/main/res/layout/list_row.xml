@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/poster"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:src="@drawable/cat"/>
 
 </RelativeLayout>
