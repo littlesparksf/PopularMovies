@@ -133,9 +133,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
              favoriteViewModel.getFavorites().observe(this, new Observer<List<MovieItem>>() {
                  @Override
                  public void onChanged(@Nullable List<MovieItem> favoriteMovies) {
-                     ;
                      mLoadingIndicator.setVisibility(View.INVISIBLE);
-
                      if (favoriteMovies != null) {
                          mAdapter.setMovieData(favoriteMovies);
                          mAdapter.notifyDataSetChanged();
