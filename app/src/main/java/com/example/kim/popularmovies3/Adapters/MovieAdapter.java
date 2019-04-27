@@ -80,6 +80,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public List<MovieItem> getMovieData(){
+        return mMovieItemList;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         // Initialize the view within this item
         protected ImageView imageView;
