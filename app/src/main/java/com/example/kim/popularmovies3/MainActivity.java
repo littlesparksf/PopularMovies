@@ -44,7 +44,6 @@ public static final String POSITION_STATE_KEY = "list_position";
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
      Observer<List<MovieItem>> favoritesObserver;
      private int positionState;
-     private Parcelable layoutState;
 
      @Override
     protected void onCreate(Bundle savedInstanceState) {
