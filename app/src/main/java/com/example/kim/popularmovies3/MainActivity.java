@@ -24,6 +24,7 @@ import com.example.kim.popularmovies3.Adapters.MovieAdapter;
 import com.example.kim.popularmovies3.JsonUtils.MovieJsonUtils;
 import com.example.kim.popularmovies3.Objects.MovieItem;
 import com.example.kim.popularmovies3.database.AppDatabase;
+import com.example.kim.popularmovies3.database.FavoriteDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public static final String MOVIE_LIST_STATE_KEY = "movies";
 public static final String POSITION_STATE_KEY = "list_position";
+public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
 
      private RecyclerView mRecyclerView;
      private MovieAdapter mAdapter;
@@ -44,6 +46,7 @@ public static final String POSITION_STATE_KEY = "list_position";
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
      Observer<List<MovieItem>> favoritesObserver;
      private int positionState;
+     Parcelable savedRecyclerLayoutState;
 
      @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +109,7 @@ public static final String POSITION_STATE_KEY = "list_position";
         if (savedInstanceState == null) {
              loadMovieData();
          }
-
          Log.v(LOG_TAG, "loadMovieData called.");
-
     }
 
      /**
@@ -148,6 +149,8 @@ public static final String POSITION_STATE_KEY = "list_position";
          mEmptyStateTextView.setVisibility(View.INVISIBLE);
          /* Then, make sure the movie data is visible */
          mRecyclerView.setVisibility(View.VISIBLE);
+         /* Hide loading indicator */
+         mLoadingIndicator.setVisibility(View.INVISIBLE);
      }
 
      /**
@@ -193,9 +196,10 @@ public static final String POSITION_STATE_KEY = "list_position";
              if (movieData != null) {
                  showMovieDataView();
                  mAdapter.setMovieData(movieData);
+                 mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
              } else {
                  showErrorMessage();
-             }
+                     }
          }
      }
 
@@ -237,14 +241,39 @@ public static final String POSITION_STATE_KEY = "list_position";
          super.onSaveInstanceState(outState);
          ArrayList movieListSavedState = (ArrayList) mAdapter.getMovieData();
          outState.putParcelableArrayList(MOVIE_LIST_STATE_KEY, movieListSavedState);
-         outState.putInt(POSITION_STATE_KEY, ((GridLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+
      }
 
      @Override
      protected void onRestoreInstanceState (Bundle savedInstanceState) {
          ArrayList movieListSavedState = savedInstanceState.getParcelableArrayList(MOVIE_LIST_STATE_KEY);
          mAdapter.setMovieData(movieListSavedState);
-         positionState = savedInstanceState.getInt(POSITION_STATE_KEY);
+         savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+         mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
          showMovieDataView();
      }
  }
+
+//     private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
+//
+//     /**
+//      * This is a method for Fragment.
+//      * You can do the same in onCreate or onRestoreInstanceState
+//      */
+//     @Override
+//     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//         super.onViewStateRestored(savedInstanceState);
+//
+//         if(savedInstanceState != null)
+//         {
+//             Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+//             recyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+//         }
+//     }
+//
+//     @Override
+//     public void onSaveInstanceState(Bundle outState) {
+//         super.onSaveInstanceState(outState);
+//         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, recyclerView.getLayoutManager().onSaveInstanceState());
+//     }
