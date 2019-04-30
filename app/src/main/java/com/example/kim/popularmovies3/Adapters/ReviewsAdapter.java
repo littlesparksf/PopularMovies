@@ -16,7 +16,7 @@ package com.example.kim.popularmovies3.Adapters;
         import java.util.List;
 
 /**
- * This FavoriteAdapter creates and binds ViewHolders, which hold the overview,
+ * This ReviewsAdapter creates and binds ViewHolders, which hold the overview,
  * title and rating of a movie, to a RecyclerView to efficiently display data.
  */
 
@@ -25,7 +25,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     // Class variables for the List that holds task data and the Context
     private List<ReviewListItem> mReviewsList;
     private Context mContext;
-    private static final String LOG_TAG = FavoriteAdapter.class.getSimpleName();
+    private static final String LOG_TAG = ReviewsAdapter.class.getSimpleName();
 
     /**
      * Constructor for the TaskAdapter that initializes the Context.

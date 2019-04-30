@@ -42,13 +42,6 @@
         </activity>
 
         <!-- FavoriteActivity -->
-        <activity
-            android:name="FavoritesActivity"
-            android:label="@string/favorites_title">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.kim.popularmovies3.MainActivity"/>
-        </activity>
 
     </application>
 

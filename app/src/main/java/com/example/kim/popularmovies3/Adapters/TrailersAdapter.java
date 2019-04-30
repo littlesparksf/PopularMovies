@@ -16,7 +16,7 @@ import com.example.kim.popularmovies3.Objects.TrailerListItem;
 import java.util.List;
 
 /**
- * This FavoriteAdapter creates and binds ViewHolders, which hold the overview,
+ * This ReviewsAdapter creates and binds ViewHolders, which hold the overview,
  * title and rating of a movie, to a RecyclerView to efficiently display data.
  */
 

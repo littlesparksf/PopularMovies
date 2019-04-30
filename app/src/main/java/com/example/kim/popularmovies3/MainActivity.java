@@ -34,7 +34,6 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
  public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 public static final String MOVIE_LIST_STATE_KEY = "movies";
-public static final String POSITION_STATE_KEY = "list_position";
 public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
 
      private RecyclerView mRecyclerView;
@@ -45,7 +44,6 @@ public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
      public AppDatabase mDb;
      private static final String LOG_TAG = MainActivity.class.getSimpleName();
      Observer<List<MovieItem>> favoritesObserver;
-     private int positionState;
      Parcelable savedRecyclerLayoutState;
 
      @Override
@@ -53,8 +51,6 @@ public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.v(LOG_TAG, "onCreate called.");
-
-        positionState = 0;
 
         // Main Recycler View
 
@@ -242,7 +238,6 @@ public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
          ArrayList movieListSavedState = (ArrayList) mAdapter.getMovieData();
          outState.putParcelableArrayList(MOVIE_LIST_STATE_KEY, movieListSavedState);
          outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
-
      }
 
      @Override
@@ -254,26 +249,3 @@ public static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
          showMovieDataView();
      }
  }
-
-//     private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
-//
-//     /**
-//      * This is a method for Fragment.
-//      * You can do the same in onCreate or onRestoreInstanceState
-//      */
-//     @Override
-//     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//         super.onViewStateRestored(savedInstanceState);
-//
-//         if(savedInstanceState != null)
-//         {
-//             Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-//             recyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
-//         }
-//     }
-//
-//     @Override
-//     public void onSaveInstanceState(Bundle outState) {
-//         super.onSaveInstanceState(outState);
-//         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, recyclerView.getLayoutManager().onSaveInstanceState());
-//     }
